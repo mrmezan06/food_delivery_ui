@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_ui/data/data.dart';
+import 'package:food_delivery_ui/models/restaurant.dart';
 import 'package:food_delivery_ui/widgets/recent_orders.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,7 +11,36 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  get onPressed => null;
+  _buildRestaurants(){
+    List<Widget> restaurantList = [];
+    restaurants.forEach((Restaurant restaurant) {
+      restaurantList.add(
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15.0),
+            border: Border.all(
+              width: 1.0,
+              color: const Color.fromARGB(100, 203, 195, 195),),
+            ),
+            child: Row(children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Image(
+                          height: 150.0,
+                          width: 150.0,
+                          image: AssetImage(restaurant.imageUrl),
+                          fit: BoxFit.cover,
+                      ),
+                    ),
+            ],
+            ),
+          ),
+      );
+    });
+    return Column(children: restaurantList,);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +95,21 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           RecentOrders(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text("Nearby Restaurants",
+                  style: TextStyle(
+                  fontSize: 24.0,
+                  letterSpacing: 1.2,
+                ),
+                ),
+              ),
+              _buildRestaurants(),
+            ],
+          ),
         ],
       ),
     );
